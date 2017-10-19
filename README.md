@@ -10,8 +10,8 @@ The `HorizontalScrollingPickerView` is a `UICollectionView` that provides a smoo
 
 If you want to have a _boss_ scrolling experience like this:
 
-![Blue Apron Meal Rescheduler](https://imgur.com/a/4i8PA)
-
+![Imgur Image](https://i.imgur.com/yZfJyNah.jpg)
+            
 Note: this view is optimized to display a medium-sized collection, given that its primary offering is allowing a user to scroll to a given cell that may be off the screen. One way to offset this natural requirement is to consider the intended size of the cell.
 
 ## Example
