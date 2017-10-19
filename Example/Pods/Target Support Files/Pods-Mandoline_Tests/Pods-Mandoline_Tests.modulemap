@@ -1,0 +1,6 @@
+framework module Pods_Mandoline_Tests {
+  umbrella header "Pods-Mandoline_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

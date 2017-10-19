@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Mandoline
 //
-//  Created by ag on 10/18/2017.
+//  Created by Anat Gilboa on 10/18/2017.
 //  Copyright (c) 2017 ag. All rights reserved.
 //
 
