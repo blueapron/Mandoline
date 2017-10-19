@@ -49,6 +49,7 @@
 		4D68C35510D1E911C9B89840FC4B777F /* mach_excServer.c in Sources */ = {isa = PBXBuildFile; fileRef = 62BBB1D2D1BDE1DEBAF58AE51F5F0317 /* mach_excServer.c */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		4DC907ECD09C6A506DF7E71DC1E86BCD /* QuickSelectedTestSuiteBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D52C47FCADF09064B4A845F6AD3D81A /* QuickSelectedTestSuiteBuilder.swift */; };
 		4FABBF5CA8F735F48035BE4144613CB7 /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC1D97170BA6A3AA1406021FE9B39CD /* Expression.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
+		4FBF89FA1F98472E00FB33B4 /* Selectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF89F91F98472E00FB33B4 /* Selectable.swift */; };
 		50698F14E7847E18B907E9373FBF4C21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB24D5D6FA90F768E669DC05B92F89F4 /* Foundation.framework */; };
 		531C54B1C10BA0F17A2B7D81D02BD390 /* CwlCatchException.h in Headers */ = {isa = PBXBuildFile; fileRef = C2A445420B7A35F25CFECBFD9C6ED57D /* CwlCatchException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		54CC2049C937561A469575AF9E6A6FE9 /* NimbleEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031615A193FFD80E32678FE044100227 /* NimbleEnvironment.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -267,6 +268,7 @@
 		4E8A9228FAD1CBB3465A6B1E7E197ACE /* Pods-Mandoline_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Mandoline_Example-umbrella.h"; sourceTree = "<group>"; };
 		4E99118465DF4B52938C1AE375EA709D /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
 		4FBEBEAD01A9C40D33E3E8F4E7C55532 /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FBF89F91F98472E00FB33B4 /* Selectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Selectable.swift; path = Mandoline/Classes/Selectable.swift; sourceTree = "<group>"; };
 		51257F570573BCF8EEBFEF8F4A615892 /* QuickTestSuite.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickTestSuite.swift; path = Sources/Quick/QuickTestSuite.swift; sourceTree = "<group>"; };
 		5282AB51C6333D7E3BFCB635C234FBEC /* QuickConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QuickConfiguration.h; path = Sources/QuickObjectiveC/Configuration/QuickConfiguration.h; sourceTree = "<group>"; };
 		534E92EA196FBFF2662B1109C1B8BD0C /* SnapKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SnapKit.modulemap; sourceTree = "<group>"; };
@@ -561,6 +563,7 @@
 				145073B7EF829CE93820ED4C5FC790B0 /* HorizontalScrollingPickerViewCell.swift */,
 				DFE705DFB5A37CA3F7EF1E9716249E5A /* HorizontalScrollingPickerViewModel.swift */,
 				E9080CC1D15275A3327322F07EB39E6E /* HorizontalScrollingPickerViewOverlay.swift */,
+				4FBF89F91F98472E00FB33B4 /* Selectable.swift */,
 				4FBF89F81F98407500FB33B4 /* Extensions */,
 				D4EDF72353E32FD7DBD58C27F59EDAD3 /* Support Files */,
 			);
@@ -1139,6 +1142,7 @@
 				F65FD9525B5B87A07E249851DE693626 /* HorizontalScrollingPickerViewCell.swift in Sources */,
 				7D68DD6730FDE6F55B875A5936EBC0C9 /* HorizontalScrollingPickerViewModel.swift in Sources */,
 				1944ABDDED46961C3A30C4902069FD3A /* HorizontalScrollingPickerViewOverlay.swift in Sources */,
+				4FBF89FA1F98472E00FB33B4 /* Selectable.swift in Sources */,
 				5D434211C82C44C12C9A9F9F94207D3F /* Mandoline-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

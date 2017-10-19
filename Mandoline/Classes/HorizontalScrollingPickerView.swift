@@ -10,13 +10,14 @@ import SnapKit
 
 public class HorizontalScrollingPickerView: UIView {
 
-    /// The dataSource that, upon conforming to
+    /// The dataSource that, upon providing a set of `Selectable` items, reloads the UICollectionView
     public weak var dataSource: HorizontalScrollingPickerViewDataSource? {
         didSet {
             reloadData()
         }
     }
-    
+
+    /// The delegate that, upon conforming to all of the
     public weak var delegate: HorizontalScrollingPickerViewDelegate?
 
     /// Change the color of the overlay's border
@@ -50,10 +51,10 @@ public class HorizontalScrollingPickerView: UIView {
     }
 
     /// Change the distance of the dot from the top of the UICollectionView
-    public var distanceOfDotFromTop: CGFloat? {
+    public var dotDistanceFromTop: CGFloat? {
         didSet {
-            guard let distance = distanceOfDotFromTop else { return }
-            selectedDayOverlay.distanceOfDotFromTop = distance
+            guard let distance = dotDistanceFromTop else { return }
+            selectedDayOverlay.dotDistanceFromTop = distance
         }
     }
 
@@ -64,10 +65,17 @@ public class HorizontalScrollingPickerView: UIView {
             selectedDayOverlay.snp.updateConstraints { make in
                 make.size.equalTo(size)
             }
-            calendarView.snp.updateConstraints { make in
+            collectionView.snp.updateConstraints { make in
                 make.height.equalTo(size.height)
             }
             updateConstraintsIfNeeded()
+        }
+    }
+
+    /// Change the background color of the UICollectionView
+    override public var backgroundColor: UIColor? {
+        didSet {
+            collectionView.backgroundColor = backgroundColor
         }
     }
 
@@ -91,7 +99,7 @@ public class HorizontalScrollingPickerView: UIView {
     fileprivate var lastScrollProgress = CGFloat()
     fileprivate var lastIndexPath: IndexPath?
 
-    let calendarView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -112,20 +120,20 @@ public class HorizontalScrollingPickerView: UIView {
     }()
 
     func setupSubviews() {
-        calendarView.dataSource = self
-        calendarView.delegate = self
-        calendarView.backgroundColor = .gray
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .lightGray
 
-        addSubview(calendarView)
-        calendarView.register(HorizontalScrollingPickerViewCell.self, forCellWithReuseIdentifier: "DayCell")
-        calendarView.snp.makeConstraints { make in
+        addSubview(collectionView)
+        collectionView.register(HorizontalScrollingPickerViewCell.self, forCellWithReuseIdentifier: "DayCell")
+        collectionView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.height.equalTo(cellSize ?? HorizontalScrollingPickerViewCell.cellSize.height)
         }
 
         addSubview(selectedDayOverlay)
         selectedDayOverlay.snp.makeConstraints { make in
-            make.top.equalTo(calendarView.snp.top)
+            make.top.equalTo(collectionView.snp.top)
             make.size.equalTo(cellSize ?? HorizontalScrollingPickerViewCell.cellSize)
             make.centerX.equalToSuperview()
         }
@@ -134,27 +142,27 @@ public class HorizontalScrollingPickerView: UIView {
     func reloadData() {
         guard let dataSource = self.dataSource else { return }
         viewModel = HorizontalScrollingPickerViewModel(cells: dataSource.selectableCells)
-        calendarView.reloadData()
+        collectionView.reloadData()
     }
 
     public func register<T: UICollectionViewCell>(cellType: T.Type) {
-        calendarView.register(cellType, forCellWithReuseIdentifier: "DayCell")
+        collectionView.register(cellType, forCellWithReuseIdentifier: "DayCell")
     }
 
     public func scrollToCell(at indexPath: IndexPath) {
         guard let cellViewModelsCount = viewModel?.cells.count else { return }
         if indexPath.row < cellViewModelsCount / 2 {
             let lastIndexPath = IndexPath(row: cellViewModelsCount - 1, section: 0)
-            calendarView.scrollToItem(at: lastIndexPath, at: .centeredHorizontally, animated: false)
-            calendarView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            collectionView.scrollToItem(at: lastIndexPath, at: .centeredHorizontally, animated: false)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         } else {
-            calendarView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        guard let flowLayout = calendarView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let inset = center.x - ((cellSize ?? HorizontalScrollingPickerViewCell.cellSize).width / 2)
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
     }
@@ -202,6 +210,7 @@ extension HorizontalScrollingPickerViewDelegate {
 }
 
 extension HorizontalScrollingPickerView: UICollectionViewDataSource {
+
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.cells.count ?? 0
     }
@@ -231,15 +240,15 @@ extension HorizontalScrollingPickerView: UICollectionViewDelegateFlowLayout {
 }
 extension HorizontalScrollingPickerView : UIScrollViewDelegate {
 
-    // This delegate function calculates the "snapping" for the overlay over the CollectionView (calendar view) cells
-    // The main purpose of this function is two-fold:
-    //      - to calculate the size of the selected overlay's imageView, that is whether it scales from 0 to 1.5x
+    /// This delegate function calculates the "snapping" for the overlay over the CollectionView (calendar view) cells
+    /// The main purpose of this function is two-fold:
+    ///      - to calculate the size of the selected overlay's imageView, that is whether it scales from 0 to 1.5x
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetXOffset = targetContentOffset.pointee.x
-        let rect = CGRect(origin: targetContentOffset.pointee, size: calendarView.bounds.size)
-        guard let attributes = calendarView.collectionViewLayout.layoutAttributesForElements(in: rect) else { return }
+        let rect = CGRect(origin: targetContentOffset.pointee, size: collectionView.bounds.size)
+        guard let attributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: rect) else { return }
         let xOffsets = attributes.map { $0.frame.origin.x }
-        let distanceToOverlayLeftEdge = selectedDayOverlay.frame.origin.x - calendarView.frame.origin.x
+        let distanceToOverlayLeftEdge = selectedDayOverlay.frame.origin.x - collectionView.frame.origin.x
         let targetCellLeftEdge = targetXOffset + distanceToOverlayLeftEdge
         let differences = xOffsets.map { fabs(Double($0 - targetCellLeftEdge)) }
         guard let min = differences.min(), let position = differences.index(of: min) else { return }
@@ -252,7 +261,7 @@ extension HorizontalScrollingPickerView : UIScrollViewDelegate {
     /// whether the left and right cells are "selectable"
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let vm = viewModel else { return }
-        let scrollProgress = CGFloat(calendarView.contentOffset.x / (cellSize ?? HorizontalScrollingPickerViewCell.cellSize).width)
+        let scrollProgress = CGFloat(collectionView.contentOffset.x / (cellSize ?? HorizontalScrollingPickerViewCell.cellSize).width)
         defer { lastScrollProgress = scrollProgress }
         let leftIndex = Int(floor(scrollProgress))
         let rightIndex = Int(ceil(scrollProgress))
@@ -276,9 +285,9 @@ extension HorizontalScrollingPickerView : UIScrollViewDelegate {
         guard ((lastScrollProgress.integerBelow != scrollProgress.integerBelow) && !lastScrollProgress.isIntegral)
             || (scrollProgress.isIntegral && !lastScrollProgress.isIntegral) else { return }
         self.generateFeedback()
-        var convertedCenter = calendarView.convert(selectedDayOverlay.center, to: calendarView)
-        convertedCenter.x += calendarView.contentOffset.x
-        guard let indexPath = calendarView.indexPathForItem(at: convertedCenter) else { return }
+        var convertedCenter = collectionView.convert(selectedDayOverlay.center, to: collectionView)
+        convertedCenter.x += collectionView.contentOffset.x
+        guard let indexPath = collectionView.indexPathForItem(at: convertedCenter) else { return }
         vm.select(cell: vm.cells[indexPath.row])
         self.generateFeedback()
         delegate?.scrollViewDidScroll(scrollView)

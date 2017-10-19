@@ -47,10 +47,10 @@ class HorizontalScrollingPickerViewOverlay: UIView {
         }
     }
 
-    var distanceOfDotFromTop: CGFloat = 70 {
+    var dotDistanceFromTop: CGFloat = 70 {
         didSet {
             imageView.snp.updateConstraints { make in
-                make.top.equalToSuperview().offset(distanceOfDotFromTop)
+                make.top.equalToSuperview().offset(dotDistanceFromTop)
             }
         }
     }
@@ -78,7 +78,7 @@ class HorizontalScrollingPickerViewOverlay: UIView {
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(distanceOfDotFromTop)
+            make.top.equalToSuperview().offset(dotDistanceFromTop)
             make.centerX.equalToSuperview()
         }
 

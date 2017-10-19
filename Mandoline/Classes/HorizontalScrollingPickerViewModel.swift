@@ -8,10 +8,6 @@
 
 import Foundation
 
-public protocol Selectable {
-    var isSelectable: Bool { get set }
-}
-
 class HorizontalScrollingPickerViewModel {
     var cells: [Selectable]
 
