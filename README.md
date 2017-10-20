@@ -33,7 +33,7 @@ pod 'Mandoline'
 
 In the ViewController of use, you'll want to set the `PickerView`'s `dataSource` and `delegate` to `self`. Similar to a UICollectionView, be sure to `register` `YourCellClass` before the view will appear.
 
-```
+``` swift
 override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -47,14 +47,14 @@ override func viewDidLoad() {
 
  The `Selectable` protocol dictates whether an item is available (`isSelectable`), as observed by the size of the Overlay's dot.
 
-```
+``` swift
 public protocol Selectable {
     var isSelectable: Bool { get set }
 }
 ```
 
 The `DataSource` is an array of `Selectable`'s.
-```
+``` swift
 public protocol Selectable: class {
   var selectableCells: [Selectable] { get }
 }
@@ -64,7 +64,7 @@ public protocol Selectable: class {
 
 The `PickerView` has a number of `UIScrollView` and `UICollectionView` delegate functions that can be called on the view.
 
-```
+``` swift
 func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
 
 }
@@ -84,7 +84,7 @@ func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
 The last delegate function that can be used by a consumer of this view is the `configure` function that is called in `collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell` for customization.
 
-```
+``` swift
 func configure(cell: UICollectionViewCell, for: IndexPath) {
 
 }
