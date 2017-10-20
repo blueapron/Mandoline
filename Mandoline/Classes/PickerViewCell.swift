@@ -1,5 +1,5 @@
 //
-//  HorizontalScrollingPickerViewCell.swift
+//  PickerViewCell.swift
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class HorizontalScrollingPickerViewCell: UICollectionViewCell, Selectable {
+public class PickerViewCell: UICollectionViewCell, Selectable {
     public var isSelectable = true
     static let cellSize = CGSize(width: 76, height: 94)
 

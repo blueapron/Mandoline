@@ -1,5 +1,5 @@
 //
-//  HorizontalScrollingPickerView.swift
+//  PickerView.swift
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
@@ -8,17 +8,17 @@
 
 import SnapKit
 
-public class HorizontalScrollingPickerView: UIView {
+public class PickerView: UIView {
 
     /// The dataSource that, upon providing a set of `Selectable` items, reloads the UICollectionView
-    public weak var dataSource: HorizontalScrollingPickerViewDataSource? {
+    public weak var dataSource: PickerViewDataSource? {
         didSet {
             reloadData()
         }
     }
 
     /// The delegate that, upon conforming to all of the
-    public weak var delegate: HorizontalScrollingPickerViewDelegate?
+    public weak var delegate: PickerViewDelegate?
 
     /// Change the color of the overlay's border
     public var selectedOverlayColor: UIColor = UIColor.blue {
@@ -95,7 +95,7 @@ public class HorizontalScrollingPickerView: UIView {
         self.setupSubviews()
     }
 
-    fileprivate var viewModel: HorizontalScrollingPickerViewModel?
+    fileprivate var viewModel: PickerViewModel?
     fileprivate var lastScrollProgress = CGFloat()
     fileprivate var lastIndexPath: IndexPath?
 
@@ -113,8 +113,8 @@ public class HorizontalScrollingPickerView: UIView {
         return collectionView
     }()
 
-    let selectedDayOverlay: HorizontalScrollingPickerViewOverlay = {
-        let view = HorizontalScrollingPickerViewOverlay()
+    let selectedDayOverlay: PickerViewOverlay = {
+        let view = PickerViewOverlay()
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -125,23 +125,23 @@ public class HorizontalScrollingPickerView: UIView {
         collectionView.backgroundColor = .lightGray
 
         addSubview(collectionView)
-        collectionView.register(HorizontalScrollingPickerViewCell.self, forCellWithReuseIdentifier: "DayCell")
+        collectionView.register(PickerViewCell.self, forCellWithReuseIdentifier: "DayCell")
         collectionView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
-            make.height.equalTo(cellSize ?? HorizontalScrollingPickerViewCell.cellSize.height)
+            make.height.equalTo(cellSize ?? PickerViewCell.cellSize.height)
         }
 
         addSubview(selectedDayOverlay)
         selectedDayOverlay.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.top)
-            make.size.equalTo(cellSize ?? HorizontalScrollingPickerViewCell.cellSize)
+            make.size.equalTo(cellSize ?? PickerViewCell.cellSize)
             make.centerX.equalToSuperview()
         }
     }
 
     func reloadData() {
         guard let dataSource = self.dataSource else { return }
-        viewModel = HorizontalScrollingPickerViewModel(cells: dataSource.selectableCells)
+        viewModel = PickerViewModel(cells: dataSource.selectableCells)
         collectionView.reloadData()
     }
 
@@ -163,40 +163,40 @@ public class HorizontalScrollingPickerView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        let inset = center.x - ((cellSize ?? HorizontalScrollingPickerViewCell.cellSize).width / 2)
+        let inset = center.x - ((cellSize ?? PickerViewCell.cellSize).width / 2)
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
     }
 }
 
-public protocol HorizontalScrollingPickerViewDataSource: class {
+public protocol PickerViewDataSource: class {
     /// The cells that are `Selectable` and set by the implementing ViewController
     var selectableCells: [Selectable] { get }
 }
 
-public protocol HorizontalScrollingPickerViewDelegate: class {
+public protocol PickerViewDelegate: class {
     /// UICollectionViewDelegate function that allows the consumer to respond to any selection events
-    func collectionView(_ view: HorizontalScrollingPickerView, didSelectItemAt indexPath: IndexPath)
+    func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath)
     /// UIScrollView function that allows the consumer to respond to scrolling events beginning
-    func scrollViewWillBeginDragging(_ view: HorizontalScrollingPickerView)
+    func scrollViewWillBeginDragging(_ view: PickerView)
     /// UIScrollView function that allows the consumer to respond to scrolling events ending
-    func scrollViewWillEndDragging(_ view: HorizontalScrollingPickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
     /// UIScrollView function that allows the consumer to respond to `scrollViewDidScroll`
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     /// Configuration function to be called with consumer's implemented custom UICollectionViewCell.
     func configure(cell: UICollectionViewCell, for: IndexPath)
 }
 
-extension HorizontalScrollingPickerViewDelegate {
+extension PickerViewDelegate {
 
-    func collectionView(_ view: HorizontalScrollingPickerView, didSelectItemAt indexPath: IndexPath) {
-
-    }
-
-    func scrollViewWillBeginDragging(_ view: HorizontalScrollingPickerView) {
+    func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
 
     }
 
-    func scrollViewWillEndDragging(_ view: HorizontalScrollingPickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillBeginDragging(_ view: PickerView) {
+
+    }
+
+    func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
     }
 
@@ -209,7 +209,7 @@ extension HorizontalScrollingPickerViewDelegate {
     }
 }
 
-extension HorizontalScrollingPickerView: UICollectionViewDataSource {
+extension PickerView: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.cells.count ?? 0
@@ -231,14 +231,14 @@ extension HorizontalScrollingPickerView: UICollectionViewDataSource {
     }
 }
 
-extension HorizontalScrollingPickerView: UICollectionViewDelegateFlowLayout {
+extension PickerView: UICollectionViewDelegateFlowLayout {
 
-    /// This delegate function determines the size of the cell to return. If the cellSize is not set, then it returns the size of the HorizontalScrollingPickerViewCell
+    /// This delegate function determines the size of the cell to return. If the cellSize is not set, then it returns the size of the PickerViewCell
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize ?? HorizontalScrollingPickerViewCell.cellSize
+        return cellSize ?? PickerViewCell.cellSize
     }
 }
-extension HorizontalScrollingPickerView : UIScrollViewDelegate {
+extension PickerView : UIScrollViewDelegate {
 
     /// This delegate function calculates the "snapping" for the overlay over the CollectionView (calendar view) cells
     /// The main purpose of this function is two-fold:
@@ -261,7 +261,7 @@ extension HorizontalScrollingPickerView : UIScrollViewDelegate {
     /// whether the left and right cells are "selectable"
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let vm = viewModel else { return }
-        let scrollProgress = CGFloat(collectionView.contentOffset.x / (cellSize ?? HorizontalScrollingPickerViewCell.cellSize).width)
+        let scrollProgress = CGFloat(collectionView.contentOffset.x / (cellSize ?? PickerViewCell.cellSize).width)
         defer { lastScrollProgress = scrollProgress }
         let leftIndex = Int(floor(scrollProgress))
         let rightIndex = Int(ceil(scrollProgress))
@@ -294,7 +294,7 @@ extension HorizontalScrollingPickerView : UIScrollViewDelegate {
     }
 }
 
-extension HorizontalScrollingPickerView {
+extension PickerView {
 
     /// Generates feedback "selectionChanged" feedback
     fileprivate func generateFeedback() {

@@ -1,5 +1,5 @@
 //
-//  HorizontalScrollingPickerViewOverlay.swift
+//  PickerViewOverlay.swift
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
@@ -8,10 +8,16 @@
 
 import UIKit
 
-class HorizontalScrollingPickerViewOverlay: UIView {
+class PickerViewOverlay: UIView {
+    static let defaultTriangleSize = CGSize(width: 10, height: 5)
     let view: UIView
-    let imageView = UIImageView()
-    let triangleView = HorizontalScrollingPickerViewOverlayTriangleView()
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "HandleGreen", in: Bundle(for: PickerView.self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        return imageView
+    }()
+
+    let triangleView = PickerViewOverlayTriangleView()
 
     // Computed Properties
     var triangleSize = CGSize(width: 10, height: 5) {
@@ -82,7 +88,6 @@ class HorizontalScrollingPickerViewOverlay: UIView {
             make.centerX.equalToSuperview()
         }
 
-        imageView.image = UIImage(named: "GreenDot")?.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = dotColor
         imageView.snp.makeConstraints { make in
             make.size.equalTo(sizeOfDot)
@@ -102,7 +107,7 @@ class HorizontalScrollingPickerViewOverlay: UIView {
 }
 
 // This is the downward pointing arrow in the OverlayView
-class HorizontalScrollingPickerViewOverlayTriangleView: UIView {
+class PickerViewOverlayTriangleView: UIView {
 
     // We have to override the init just because we need to set isOpaque to false
     override init(frame: CGRect) {
@@ -118,6 +123,7 @@ class HorizontalScrollingPickerViewOverlayTriangleView: UIView {
         UIColor.clear.setFill()
         if let color = color {
             color.setFill()
+            draw(CGRect(origin: CGPoint.zero, size: PickerViewOverlay.defaultTriangleSize))
         } else {
             UIColor.blue.setFill()
         }

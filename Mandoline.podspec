@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
   s.name             = 'Mandoline'
   s.version          = '0.1.0'
-  s.summary          = 'A scrolling horizontal picker view.'
+  s.summary          = 'A scrolling picker view.'
 
   s.description      = <<-DESC
-    The HorizontalScrollingPickerView is a UIview that provides a smooth "picking" interface.
+    The PickerView is a UIview that provides a smooth "picking" interface.
     In order to get the most out of it, a cell should implement the Selectable protocol that dictates whether a cell `isSelectable`.
                        DESC
 
@@ -17,6 +17,9 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Mandoline/Classes/**/*'
-
+  s.resource_bundles = {
+    'Mandoline' => ['Mandoline/Assets/**/*']
+  }
+  s.resources = 'Mandoline/Assets/**/*'
   s.dependency 'SnapKit', '~> 3.2.0'
 end

@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Mandoline: a1b9f2238160de8b09ee8d86a7a611c63cf287a8
+  Mandoline: af5544390aeef1b26e8ed0ba595fa4df670c5acd
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7

@@ -1,5 +1,5 @@
 //
-//  HorizontalScrollingPickerViewModelSpec.swift
+//  PickerViewModelSpec.swift
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
@@ -12,15 +12,15 @@ import Nimble
 @testable import Mandoline
 
 //QuickSpec
-class HorizontalScrollingPickerViewModelSpec: QuickSpec {
+class PickerViewModelSpec: QuickSpec {
     override func spec() {
-        var subject: HorizontalScrollingPickerViewModel!
+        var subject: PickerViewModel!
         beforeEach {
-            subject = HorizontalScrollingPickerViewModel(cells: HorizontalScrollingPickerViewModel.dummyCells())
+            subject = PickerViewModel(cells: PickerViewModel.dummyCells())
         }
         describe("init") {
             it("creates a viewModel") {
-                expect(subject.cells).to(haveCount(HorizontalScrollingPickerViewModel.dummyCells().count))
+                expect(subject.cells).to(haveCount(PickerViewModel.dummyCells().count))
             }
         }
         describe("cell selection") {
@@ -35,7 +35,7 @@ class HorizontalScrollingPickerViewModelSpec: QuickSpec {
     }
 }
 
-extension HorizontalScrollingPickerViewModel {
+extension PickerViewModel {
     struct DummyCell: Selectable {
         var isSelectable: Bool
     }

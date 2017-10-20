@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		26D703646016049FAD28A34E /* Pods_Mandoline_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE60F2C17D973EAEBC7E9D6A /* Pods_Mandoline_Example.framework */; };
 		4F8F0EBA1F97A8A800A82472 /* ScrollableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F0EB91F97A8A700A82472 /* ScrollableCell.swift */; };
-		4FBF89F21F98357400FB33B4 /* HorizontalScrollingPickerViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD0C8721F982472009E1414 /* HorizontalScrollingPickerViewModelSpec.swift */; };
+		4FBF89F21F98357400FB33B4 /* PickerViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD0C8721F982472009E1414 /* PickerViewModelSpec.swift */; };
 		4FD0C8711F982408009E1414 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FD0C8701F982408009E1414 /* Images.xcassets */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -46,7 +46,7 @@
 		42DE31088629991038451A77 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4F8F0EB91F97A8A700A82472 /* ScrollableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableCell.swift; sourceTree = "<group>"; };
 		4FD0C8701F982408009E1414 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4FD0C8721F982472009E1414 /* HorizontalScrollingPickerViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScrollingPickerViewModelSpec.swift; sourceTree = "<group>"; };
+		4FD0C8721F982472009E1414 /* PickerViewModelSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewModelSpec.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Mandoline_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mandoline_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				4FD0C8721F982472009E1414 /* HorizontalScrollingPickerViewModelSpec.swift */,
+				4FD0C8721F982472009E1414 /* PickerViewModelSpec.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -405,7 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FBF89F21F98357400FB33B4 /* HorizontalScrollingPickerViewModelSpec.swift in Sources */,
+				4FBF89F21F98357400FB33B4 /* PickerViewModelSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -4,13 +4,15 @@
 [![License](https://img.shields.io/cocoapods/l/Mandoline.svg?style=flat)](http://cocoapods.org/pods/Mandoline)
 [![Platform](https://img.shields.io/cocoapods/p/Mandoline.svg?style=flat)](http://cocoapods.org/pods/Mandoline)
 
-The `HorizontalScrollingPickerView` is a `UICollectionView` that provides a smooth "picking". In order to get the most out of it, a consuming view controller should support the `Selectable` protocol in the intended `UICollectionViewCell`s that dictates whether a cell `isSelectable`.
+The `PickerView` is a `UICollectionView` that provides a smooth "picking" interface. In order to get the most out of it, a consuming view controller should support the `Selectable` protocol in the intended `UICollectionViewCell`s that dictates whether a cell `isSelectable`.
 
 ## Why would I want to use this library?
 
 If you want to have a _boss_ scrolling experience like this:
 
-![Blue Apron Meal Rescheduler](https://imgur.com/a/4i8PA)
+![Blue Apron Meal Rescheduler](Mandoline/Assets/rescheduler.gif)
+
+It also has responsive haptic feedback that is generated upon selection and moving across cells.
 
 Note: this view is optimized to display a medium-sized collection, given that its primary offering is allowing a user to scroll to a given cell that may be off the screen. One way to offset this natural requirement is to consider the intended size of the cell.
 
@@ -20,7 +22,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-HorizontalScrollingPickerView is available through [CocoaPods](http://cocoapods.org). To install
+PickerView is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
@@ -29,7 +31,7 @@ pod 'Mandoline'
 
 ## Usage
 
-In the ViewController of use, you'll want to set the `HorizontalScrollingPickerView`'s `dataSource` and `delegate` to `self`. Similar to a UICollectionView, be sure to `register` `YourCellClass` before the view will appear.
+In the ViewController of use, you'll want to set the `PickerView`'s `dataSource` and `delegate` to `self`. Similar to a UICollectionView, be sure to `register` `YourCellClass` before the view will appear.
 
 ```
 override func viewDidLoad() {
@@ -41,7 +43,7 @@ override func viewDidLoad() {
 }
 ```
 
-### `HorizontalScrollingPickerViewDataSource`
+### `PickerViewDataSource`
 
  The `Selectable` protocol dictates whether an item is available (`isSelectable`), as observed by the size of the Overlay's dot.
 
@@ -58,20 +60,20 @@ public protocol Selectable: class {
 }
 ```
 
-### `HorizontalScrollingPickerViewDelegate`
+### `PickerViewDelegate`
 
-The `HorizontalScrollingPickerView` has a number of `UIScrollView` and `UICollectionView` delegate functions that can be called on the view.
+The `PickerView` has a number of `UIScrollView` and `UICollectionView` delegate functions that can be called on the view.
 
 ```
-func collectionView(_ view: HorizontalScrollingPickerView, didSelectItemAt indexPath: IndexPath) {
+func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
 
 }
 
-func scrollViewWillBeginDragging(_ view: HorizontalScrollingPickerView) {
+func scrollViewWillBeginDragging(_ view: PickerView) {
 
 }
 
-func scrollViewWillEndDragging(_ view: HorizontalScrollingPickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
 }
 
@@ -90,12 +92,12 @@ func configure(cell: UICollectionViewCell, for: IndexPath) {
 
 ### Mutable Properties
 
-There are a number of settable properties on the HorizontalScrollingPickerView:
+There are a number of settable properties on the PickerView:
 
 #### Required
 * `cellSize`: Set the size of the cell
 
-If the `cellSize` is not set, the default cellSize used in the `HorizontalScrollingPickerViewCell` is used.
+If the `cellSize` is not set, the default cellSize used in the `PickerViewCell` is used.
 
 #### Optional
 * `selectedOverlayColor`: Change the color of the overlay's border
@@ -110,13 +112,13 @@ If the `cellSize` is not set, the default cellSize used in the `HorizontalScroll
 * iOS 8+
 * Xcode 8+
 
-## Author
-
-Anat Gilboa, anat.gilboa@blueapron.com
-
 ## License
 
 Mandoline is available under the MIT license. See the LICENSE file for more info.
+
+### Contributing
+
+Interested in contributing or learning more about the project? Check out our [engineering site](http://blueapron.io/) for more information.
 
 ## Third-Party Licenses
 

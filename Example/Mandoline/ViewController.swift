@@ -3,13 +3,13 @@
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
-//  Copyright (c) 2017 Anat Gilboa. All rights reserved.
+//  Copyright (c) 2017 ag. All rights reserved.
 //
 
 import Mandoline
 import SnapKit
 
-class ViewController: UIViewController, HorizontalScrollingPickerViewDataSource {
+class ViewController: UIViewController, PickerViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,8 @@ class ViewController: UIViewController, HorizontalScrollingPickerViewDataSource 
         calendarView.scrollToCell(at: randomIndexPath)
     }
 
-    let calendarView: HorizontalScrollingPickerView = {
-        let view = HorizontalScrollingPickerView()
+    let calendarView: PickerView = {
+        let view = PickerView()
         view.cellSize = ScrollableCell.cellSize
         return view
     }()
@@ -39,17 +39,17 @@ class ViewController: UIViewController, HorizontalScrollingPickerViewDataSource 
     var selectableCells: [Selectable] = ScrollableCellViewModel.dummyCells()
 }
 
-extension ViewController: HorizontalScrollingPickerViewDelegate {
+extension ViewController: PickerViewDelegate {
 
-    func collectionView(_ view: HorizontalScrollingPickerView, didSelectItemAt indexPath: IndexPath) {
-
-    }
-
-    func scrollViewWillBeginDragging(_ view: HorizontalScrollingPickerView) {
+    func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
 
     }
 
-    func scrollViewWillEndDragging(_ view: HorizontalScrollingPickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillBeginDragging(_ view: PickerView) {
+
+    }
+
+    func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
     }
 

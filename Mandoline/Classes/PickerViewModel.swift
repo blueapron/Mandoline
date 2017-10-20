@@ -1,5 +1,5 @@
 //
-//  HorizontalScrollingPickerViewModel.swift
+//  PickerViewModel.swift
 //  Mandoline
 //
 //  Created by Anat Gilboa on 10/18/2017.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HorizontalScrollingPickerViewModel {
+class PickerViewModel {
     var cells: [Selectable]
 
     var selectedCell: Selectable?

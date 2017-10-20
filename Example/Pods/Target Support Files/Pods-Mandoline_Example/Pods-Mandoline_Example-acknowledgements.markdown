@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## Mandoline
 
-Copyright (c) 2017 ag <anat.gilboa@blueapron.com>
+Copyright (c) 2017 Anat Gilboa <anat.gilboa@blueapron.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
