@@ -114,7 +114,7 @@ If the `cellSize` is not set, the default cellSize used in the `PickerViewCell` 
 
 ## License
 
-Mandoline is available under the MIT license. See the LICENSE file for more info.
+Mandoline is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 ### Contributing
 
