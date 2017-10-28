@@ -43,10 +43,10 @@ public class PickerView: UIView {
     }
 
     /// Change the size of the dot
-    public var sizeOfDot: CGSize? {
+    public var dotSize: CGSize? {
         didSet {
-            guard let size = sizeOfDot else { return }
-            selectedItemOverlay.sizeOfDot = size
+            guard let size = dotSize else { return }
+            selectedItemOverlay.dotSize = size
         }
     }
 

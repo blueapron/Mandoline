@@ -24,8 +24,10 @@ class PickerViewOverlay: UIView {
     var triangleSize = CGSize(width: 10, height: 5) {
         didSet {
             let rect = CGRect(origin: .zero, size: triangleSize)
+            triangleView.snp.updateConstraints { make in
+                make.size.equalTo(triangleSize)
+            }
             triangleView.frameToFill = rect
-            setNeedsLayout()
         }
     }
 
@@ -48,10 +50,10 @@ class PickerViewOverlay: UIView {
         }
     }
 
-    var sizeOfDot = CGSize(width: 8, height: 8) {
+    var dotSize = CGSize(width: 8, height: 8) {
         didSet {
             imageView.snp.updateConstraints { make in
-                make.size.equalTo(sizeOfDot)
+                make.size.equalTo(dotSize)
             }
         }
     }
@@ -88,7 +90,7 @@ class PickerViewOverlay: UIView {
 
         imageView.tintColor = dotColor
         imageView.snp.makeConstraints { make in
-            make.size.equalTo(sizeOfDot)
+            make.size.equalTo(dotSize)
         }
 
         addSubview(triangleView)
@@ -117,7 +119,6 @@ class PickerViewOverlayTriangleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // In case 
     var color = UIColor.blue {
         didSet {
             setNeedsDisplay()
@@ -125,7 +126,7 @@ class PickerViewOverlayTriangleView: UIView {
     }
     var frameToFill: CGRect? {
         didSet {
-            setNeedsDisplay()
+            setNeedsLayout()
         }
     }
 

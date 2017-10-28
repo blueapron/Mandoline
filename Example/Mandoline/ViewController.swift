@@ -12,6 +12,11 @@ import SnapKit
 class ViewController: UIViewController, PickerViewDataSource {
     var selectableCells: [Selectable] = ScrollableCellViewModel.dummyCells()
 
+    let pickerView: PickerView = {
+        let view = PickerView()
+        view.cellSize = ScrollableCell.cellSize
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,18 +31,12 @@ class ViewController: UIViewController, PickerViewDataSource {
         pickerView.delegate = self
         pickerView.dataSource = self
     }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let randomIndexPath = IndexPath(row: Int(arc4random_uniform(UInt32(selectableCells.count))),section: 0)
         pickerView.scrollToCell(at: randomIndexPath)
     }
-
-    let pickerView: PickerView = {
-        let view = PickerView()
-        view.selectedOverlayColor = UIColor.cyan
-        view.cellSize = ScrollableCell.cellSize
-        return view
-    }()
 
 }
 

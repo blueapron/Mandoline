@@ -103,7 +103,7 @@ If the `cellSize` is not set, the default cellSize used in the `PickerViewCell` 
 * `selectedOverlayColor`: Change the color of the overlay's border
 * `dotColor`: Change the color of the dot
 * `triangleSize`: Change the size of the picker triangle
-* `sizeOfDot`: Change the size of the dot
+* `dotSize`: Change the size of the dot
 * `dotDistanceFromTop`: Change the distance of the dot from the top of the `UICollectionView`
 * `backgroundColor`: Change the background color of the `UICollectionView`
 
