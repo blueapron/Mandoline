@@ -10,11 +10,11 @@ The `PickerView` is a `UICollectionView` that provides a smooth "picking" interf
 
 If you want to have a _boss_ scrolling experience like this:
 
-![Blue Apron Meal Rescheduler](Mandoline/Assets/rescheduler.gif)
+![Blue Apron Meal Rescheduler](Mandoline/Assets/rescheduler-2.mov)
 
 It also has responsive haptic feedback that is generated upon selection and moving across cells.
 
-Note: this view is optimized to display a medium-sized collection, given that its primary offering is allowing a user to scroll to a given cell that may be off the screen. One way to offset this natural requirement is to consider the intended size of the cell.
+Note: this view is optimized to display a medium-sized collection, given that its primary offering is allowing a user to scroll to a given cell that may be off the screen. One way to offset this natural requirement is to consider the intended size of the `UICollectionViewCell` that will be used.
 
 ## Example
 
@@ -31,7 +31,17 @@ pod 'Mandoline'
 
 ## Usage
 
-In the ViewController of use, you'll want to set the `PickerView`'s `dataSource` and `delegate` to `self`. Similar to a UICollectionView, be sure to `register` `YourCellClass` before the view will appear.
+In the ViewController of use, you can initialize the `PickerView` like a `UIView` like so:
+
+``` swift
+let pickerView: PickerView = {
+    let view = PickerView()
+    view.cellSize = ScrollableCell.cellSize
+    return view
+}()
+```
+
+You'll also want to set the `PickerView`'s `dataSource` and `delegate` to `self`. Similar to a UICollectionView, be sure to `register` `YourCellClass` before the view will appear.
 
 ``` swift
 override func viewDidLoad() {
@@ -55,14 +65,14 @@ public protocol Selectable {
 
 The `DataSource` is an array of `Selectable`'s.
 ``` swift
-public protocol Selectable: class {
-  var selectableCells: [Selectable] { get }
+public protocol PickerViewDataSource: class {
+    var selectableCells: [Selectable] { get }
 }
 ```
 
 ### `PickerViewDelegate`
 
-The `PickerView` has a number of `UIScrollView` and `UICollectionView` delegate functions that can be called on the view.
+The `PickerView` has a number of `UIScrollView` and `UICollectionView` delegate functions that can be called on the view. These are all optional.
 
 ``` swift
 func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
@@ -82,7 +92,7 @@ func scrollViewDidScroll(_ scrollView: UIScrollView) {
 }
 ```
 
-The last delegate function that can be used by a consumer of this view is the `configure` function that is called in `collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell` for customization.
+There is also a `configure` function that is called in `collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell` for customization of `UICollectionViewCell`s.
 
 ``` swift
 func configure(cell: UICollectionViewCell, for: IndexPath) {
@@ -97,7 +107,7 @@ There are a number of settable properties on the PickerView:
 #### Required
 * `cellSize`: Set the size of the cell
 
-If the `cellSize` is not set, the default cellSize used in the `PickerViewCell` is used.
+If the `cellSize` is not set, the default `cellSize` from the `PickerViewCell` is used.
 
 #### Optional
 * `selectedOverlayColor`: Change the color of the overlay's border
