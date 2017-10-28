@@ -10,53 +10,38 @@ import Mandoline
 import SnapKit
 
 class ViewController: UIViewController, PickerViewDataSource {
+    var selectableCells: [Selectable] = ScrollableCellViewModel.dummyCells()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(calendarView)
-        calendarView.snp.makeConstraints { make in
+        view.addSubview(pickerView)
+        pickerView.snp.makeConstraints { make in
             make.left.bottom.right.equalToSuperview()
             make.height.equalTo(ScrollableCell.cellSize.height)
         }
 
-        calendarView.register(cellType: ScrollableCell.self)
-        calendarView.delegate = self
-        calendarView.dataSource = self
+        pickerView.register(cellType: ScrollableCell.self)
+        pickerView.delegate = self
+        pickerView.dataSource = self
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let randomIndexPath = IndexPath(row: Int(arc4random_uniform(UInt32(selectableCells.count))),section: 0)
-        calendarView.scrollToCell(at: randomIndexPath)
+        pickerView.scrollToCell(at: randomIndexPath)
     }
 
-    let calendarView: PickerView = {
+    let pickerView: PickerView = {
         let view = PickerView()
+        view.selectedOverlayColor = UIColor.cyan
         view.cellSize = ScrollableCell.cellSize
         return view
     }()
 
-    var selectableCells: [Selectable] = ScrollableCellViewModel.dummyCells()
 }
 
 extension ViewController: PickerViewDelegate {
-
-    func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath) {
-
-    }
-
-    func scrollViewWillBeginDragging(_ view: PickerView) {
-
-    }
-
-    func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-    }
-
     func configure(cell: UICollectionViewCell, for indexPath: IndexPath) {
         guard let datedCell = cell as? ScrollableCell else { return }
         datedCell.viewModel = selectableCells[indexPath.row] as? ScrollableCellViewModel

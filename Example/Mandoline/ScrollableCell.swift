@@ -84,14 +84,11 @@ class ScrollableCellViewModel: Selectable {
 extension ScrollableCellViewModel {
     static func dummyCells() -> [ScrollableCellViewModel] {
         let today = Date()
-        var cells: [ScrollableCellViewModel] = []
-        for i in 0...10 {
-            let isSelectable = arc4random_uniform(2) == 1
-            let cellVM = ScrollableCellViewModel(isSelectable: isSelectable)
-            cellVM.date = Calendar.current.date(byAdding: .day, value: i, to: today)
-            cells.append(cellVM)
+        return (0...10).map { index in
+            let cellVM = ScrollableCellViewModel(isSelectable: arc4random_uniform(2) == 1)
+            cellVM.date = Calendar.current.date(byAdding: .day, value: index, to: today)
+            return cellVM
         }
-        return cells
     }
 }
 

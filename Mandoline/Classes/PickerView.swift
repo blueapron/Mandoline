@@ -17,20 +17,20 @@ public class PickerView: UIView {
         }
     }
 
-    /// The delegate that, upon conforming to all of the
+    /// The object that acts as a delegate
     public weak var delegate: PickerViewDelegate?
 
     /// Change the color of the overlay's border
     public var selectedOverlayColor: UIColor = UIColor.blue {
         didSet {
-            selectedDayOverlay.setFill(color: selectedOverlayColor)
+            selectedItemOverlay.borderColor = selectedOverlayColor
         }
     }
 
     /// Change the color of the dot
     public var dotColor: UIColor = UIColor.green {
         didSet {
-            selectedDayOverlay.dotColor = dotColor
+            selectedItemOverlay.dotColor = dotColor
         }
     }
 
@@ -38,7 +38,7 @@ public class PickerView: UIView {
     public var triangleSize: CGSize? {
         didSet {
             guard let size = triangleSize else { return }
-            selectedDayOverlay.triangleSize = size
+            selectedItemOverlay.triangleSize = size
         }
     }
 
@@ -46,7 +46,7 @@ public class PickerView: UIView {
     public var sizeOfDot: CGSize? {
         didSet {
             guard let size = sizeOfDot else { return }
-            selectedDayOverlay.sizeOfDot = size
+            selectedItemOverlay.sizeOfDot = size
         }
     }
 
@@ -54,7 +54,7 @@ public class PickerView: UIView {
     public var dotDistanceFromTop: CGFloat? {
         didSet {
             guard let distance = dotDistanceFromTop else { return }
-            selectedDayOverlay.dotDistanceFromTop = distance
+            selectedItemOverlay.dotDistanceFromTop = distance
         }
     }
 
@@ -62,13 +62,13 @@ public class PickerView: UIView {
     public var cellSize: CGSize? {
         didSet {
             guard let size = cellSize else { return }
-            selectedDayOverlay.snp.updateConstraints { make in
+            selectedItemOverlay.snp.updateConstraints { make in
                 make.size.equalTo(size)
             }
             collectionView.snp.updateConstraints { make in
                 make.height.equalTo(size.height)
             }
-            updateConstraintsIfNeeded()
+            setNeedsLayout()
         }
     }
 
@@ -113,13 +113,13 @@ public class PickerView: UIView {
         return collectionView
     }()
 
-    let selectedDayOverlay: PickerViewOverlay = {
+    let selectedItemOverlay: PickerViewOverlay = {
         let view = PickerViewOverlay()
         view.isUserInteractionEnabled = false
         return view
     }()
 
-    func setupSubviews() {
+    fileprivate func setupSubviews() {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .lightGray
@@ -131,8 +131,8 @@ public class PickerView: UIView {
             make.height.equalTo(cellSize ?? PickerViewCell.cellSize.height)
         }
 
-        addSubview(selectedDayOverlay)
-        selectedDayOverlay.snp.makeConstraints { make in
+        addSubview(selectedItemOverlay)
+        selectedItemOverlay.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.top)
             make.size.equalTo(cellSize ?? PickerViewCell.cellSize)
             make.centerX.equalToSuperview()
@@ -145,10 +145,12 @@ public class PickerView: UIView {
         collectionView.reloadData()
     }
 
+    /// Register a `UICollectionViewCell` subclass
     public func register<T: UICollectionViewCell>(cellType: T.Type) {
         collectionView.register(cellType, forCellWithReuseIdentifier: "DayCell")
     }
 
+    /// Scroll to a cell at a given indexPath
     public func scrollToCell(at indexPath: IndexPath) {
         guard let cellViewModelsCount = viewModel?.cells.count else { return }
         if indexPath.row < cellViewModelsCount / 2 {
@@ -173,17 +175,17 @@ public protocol PickerViewDataSource: class {
     var selectableCells: [Selectable] { get }
 }
 
-public protocol PickerViewDelegate: class {
+@objc public protocol PickerViewDelegate: class {
     /// UICollectionViewDelegate function that allows the consumer to respond to any selection events
-    func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath)
+    @objc optional func collectionView(_ view: PickerView, didSelectItemAt indexPath: IndexPath)
     /// UIScrollView function that allows the consumer to respond to scrolling events beginning
-    func scrollViewWillBeginDragging(_ view: PickerView)
+    @objc optional func scrollViewWillBeginDragging(_ view: PickerView)
     /// UIScrollView function that allows the consumer to respond to scrolling events ending
-    func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    @objc optional func scrollViewWillEndDragging(_ view: PickerView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
     /// UIScrollView function that allows the consumer to respond to `scrollViewDidScroll`
-    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    @objc optional func scrollViewDidScroll(_ scrollView: UIScrollView)
     /// Configuration function to be called with consumer's implemented custom UICollectionViewCell.
-    func configure(cell: UICollectionViewCell, for: IndexPath)
+    @objc optional func configure(cell: UICollectionViewCell, for: IndexPath)
 }
 
 extension PickerViewDelegate {
@@ -217,7 +219,7 @@ extension PickerView: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DayCell", for: indexPath)
-        delegate?.configure(cell: cell, for: indexPath)
+        delegate?.configure?(cell: cell, for: indexPath)
         return cell
     }
 
@@ -227,7 +229,7 @@ extension PickerView: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        delegate?.collectionView(self, didSelectItemAt: indexPath)
+        delegate?.collectionView?(self, didSelectItemAt: indexPath)
     }
 }
 
@@ -241,20 +243,20 @@ extension PickerView: UICollectionViewDelegateFlowLayout {
 extension PickerView : UIScrollViewDelegate {
 
     /// This delegate function calculates the "snapping" for the overlay over the CollectionView (calendar view) cells
-    /// The main purpose of this function is two-fold:
-    ///      - to calculate the size of the selected overlay's imageView, that is whether it scales from 0 to 1.5x
+    /// The main purpose of this function is to calculate the size of the selected overlay's imageView,
+    /// that is whether it scales from 0 to 1.5x
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetXOffset = targetContentOffset.pointee.x
         let rect = CGRect(origin: targetContentOffset.pointee, size: collectionView.bounds.size)
         guard let attributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: rect) else { return }
         let xOffsets = attributes.map { $0.frame.origin.x }
-        let distanceToOverlayLeftEdge = selectedDayOverlay.frame.origin.x - collectionView.frame.origin.x
+        let distanceToOverlayLeftEdge = selectedItemOverlay.frame.origin.x - collectionView.frame.origin.x
         let targetCellLeftEdge = targetXOffset + distanceToOverlayLeftEdge
         let differences = xOffsets.map { fabs(Double($0 - targetCellLeftEdge)) }
         guard let min = differences.min(), let position = differences.index(of: min) else { return }
         let actualOffset = xOffsets[position] - distanceToOverlayLeftEdge
         targetContentOffset.pointee.x = actualOffset
-        delegate?.scrollViewWillEndDragging(self, withVelocity: velocity, targetContentOffset: targetContentOffset)
+        delegate?.scrollViewWillEndDragging?(self, withVelocity: velocity, targetContentOffset: targetContentOffset)
     }
 
     /// This delegate function calculates how much the overlay imageView should transform depending on
@@ -280,17 +282,17 @@ extension PickerView : UIScrollViewDelegate {
         case (false, false):
             dotScale = 0
         }
-        selectedDayOverlay.imageView.transform = CGAffineTransform(scaleX: dotScale, y: dotScale)
+        selectedItemOverlay.imageView.transform = CGAffineTransform(scaleX: dotScale, y: dotScale)
 
         guard ((lastScrollProgress.integerBelow != scrollProgress.integerBelow) && !lastScrollProgress.isIntegral)
             || (scrollProgress.isIntegral && !lastScrollProgress.isIntegral) else { return }
         self.generateFeedback()
-        var convertedCenter = collectionView.convert(selectedDayOverlay.center, to: collectionView)
+        var convertedCenter = collectionView.convert(selectedItemOverlay.center, to: collectionView)
         convertedCenter.x += collectionView.contentOffset.x
         guard let indexPath = collectionView.indexPathForItem(at: convertedCenter) else { return }
         vm.select(cell: vm.cells[indexPath.row])
         self.generateFeedback()
-        delegate?.scrollViewDidScroll(scrollView)
+        delegate?.scrollViewDidScroll?(scrollView)
     }
 }
 

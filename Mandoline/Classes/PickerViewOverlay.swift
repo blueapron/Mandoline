@@ -9,8 +9,9 @@
 import UIKit
 
 class PickerViewOverlay: UIView {
-    static let defaultTriangleSize = CGSize(width: 10, height: 5)
+
     let view: UIView
+
     let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "HandleGreen", in: Bundle(for: PickerView.self), compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
@@ -23,13 +24,15 @@ class PickerViewOverlay: UIView {
     var triangleSize = CGSize(width: 10, height: 5) {
         didSet {
             let rect = CGRect(origin: .zero, size: triangleSize)
-            triangleView.setFill(frame: rect)
+            triangleView.frameToFill = rect
+            setNeedsLayout()
         }
     }
 
     var borderColor = UIColor.blue {
         didSet {
             view.layer.borderColor = borderColor.cgColor
+            triangleView.color = borderColor
         }
     }
 
@@ -59,11 +62,6 @@ class PickerViewOverlay: UIView {
                 make.top.equalToSuperview().offset(dotDistanceFromTop)
             }
         }
-    }
-
-    func setFill(color: UIColor) {
-        borderColor = color
-        triangleView.setFill(with: color)
     }
 
     override init(frame: CGRect) {
@@ -119,29 +117,28 @@ class PickerViewOverlayTriangleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setFill(with color: UIColor? = nil, frame: CGRect? = nil) {
-        UIColor.clear.setFill()
-        if let color = color {
-            color.setFill()
-            draw(CGRect(origin: CGPoint.zero, size: PickerViewOverlay.defaultTriangleSize))
-        } else {
-            UIColor.blue.setFill()
+    // In case 
+    var color = UIColor.blue {
+        didSet {
+            setNeedsDisplay()
         }
-
-        if let rect = frame {
-            UIBezierPath(rect: rect).fill()
-            draw(rect)
-        } else {
-            UIBezierPath(rect: layer.frame).fill()
-            draw(layer.frame)
+    }
+    var frameToFill: CGRect? {
+        didSet {
+            setNeedsDisplay()
         }
     }
 
     override func draw(_ rect: CGRect) {
+        UIColor.clear.setFill()
+        let frame = frameToFill ?? layer.frame
+        UIBezierPath(rect: frame).fill()
+        color.setFill()
+
         let bezierPath = UIBezierPath()
         bezierPath.move(to: CGPoint(x: 0, y: 0))
-        bezierPath.addLine(to: CGPoint(x: layer.frame.width, y: 0))
-        bezierPath.addLine(to: CGPoint(x: layer.frame.width / 2, y: layer.frame.height))
+        bezierPath.addLine(to: CGPoint(x: frame.width, y: 0))
+        bezierPath.addLine(to: CGPoint(x: frame.width / 2, y: frame.height))
         bezierPath.addLine(to: CGPoint(x: 0, y: 0))
         bezierPath.close()
         bezierPath.fill()

@@ -37,9 +37,9 @@ In the ViewController of use, you'll want to set the `PickerView`'s `dataSource`
 override func viewDidLoad() {
     super.viewDidLoad()
 
-    calendarView.register(cellType: YourCellClass.self)
-    calendarView.delegate = self
-    calendarView.dataSource = self
+    pickerView.register(cellType: YourCellClass.self)
+    pickerView.delegate = self
+    pickerView.dataSource = self
 }
 ```
 
