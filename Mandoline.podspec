@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Mandoline'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'A scrolling picker view.'
 
   s.description      = <<-DESC
@@ -20,6 +20,5 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'Mandoline' => ['Mandoline/Assets/**/*']
   }
-  s.resources = 'Mandoline/Assets/**/*'
   s.dependency 'SnapKit', '~> 3.2.0'
 end
