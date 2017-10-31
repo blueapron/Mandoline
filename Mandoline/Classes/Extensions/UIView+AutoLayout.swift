@@ -7,6 +7,16 @@
 
 import Foundation
 
+struct SizeConstraints {
+    let width: NSLayoutConstraint
+    let height: NSLayoutConstraint
+    
+    func updateSize(to size: CGSize) {
+        width.constant = size.width
+        height.constant = size.height
+    }
+}
+
 extension UIView {
     @discardableResult
     func equal(_ attribute: NSLayoutAttribute,
@@ -59,11 +69,11 @@ extension UIView {
     }
     
     @discardableResult
-    func equalSize(to value: CGSize) -> (width: NSLayoutConstraint, height: NSLayoutConstraint) {
+    func equalSize(to value: CGSize) -> SizeConstraints {
         let width = self.equal(.width, to: value.width)
         let height = self.equal(.height, to: value.height)
         
-        return (width: width, height: height)
+        return SizeConstraints(width: width, height: height)
     }
     
     func equalSize(to view: UIView) {

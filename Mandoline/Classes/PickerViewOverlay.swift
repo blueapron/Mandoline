@@ -20,15 +20,13 @@ class PickerViewOverlay: UIView {
 
     let triangleView = PickerViewOverlayTriangleView()
 
-    private var triangleViewWidthConstraint: NSLayoutConstraint?
-    private var triangleViewHeightConstraint: NSLayoutConstraint?
+    private var triangleViewSizeConstraints: SizeConstraints?
     
     // Computed Properties
     var triangleSize = CGSize(width: 10, height: 5) {
         didSet {
             let rect = CGRect(origin: .zero, size: triangleSize)
-            triangleViewWidthConstraint?.constant = triangleSize.width
-            triangleViewHeightConstraint?.constant = triangleSize.height
+            triangleViewSizeConstraints?.updateSize(to: triangleSize)
             triangleView.frameToFill = rect
         }
     }
@@ -52,12 +50,10 @@ class PickerViewOverlay: UIView {
         }
     }
 
-    private var imageViewWidthConstraint: NSLayoutConstraint?
-    private var imageViewHeightConstraint: NSLayoutConstraint?
+    private var imageViewSizeConstraints: SizeConstraints?
     var dotSize = CGSize(width: 8, height: 8) {
         didSet {
-            imageViewWidthConstraint?.constant = dotSize.width
-            imageViewHeightConstraint?.constant = dotSize.height
+            imageViewSizeConstraints?.updateSize(to: dotSize)
         }
     }
 
@@ -85,16 +81,12 @@ class PickerViewOverlay: UIView {
         imageView.equal(.centerX, to: self)
 
         imageView.tintColor = dotColor
-        let imageViewSizeConstraints = imageView.equalSize(to: dotSize)
-        imageViewWidthConstraint = imageViewSizeConstraints.width
-        imageViewHeightConstraint = imageViewSizeConstraints.height
+        imageViewSizeConstraints = imageView.equalSize(to: dotSize)
 
         addSubview(triangleView)
         triangleView.equal(.top, to: self)
         triangleView.equal(.centerX, to: self)
-        let triangleViewSizeConstraints = triangleView.equalSize(to: triangleSize)
-        triangleViewWidthConstraint = triangleViewSizeConstraints.width
-        triangleViewHeightConstraint = triangleViewSizeConstraints.height
+        triangleViewSizeConstraints = triangleView.equalSize(to: triangleSize)
     }
 
     required init?(coder aDecoder: NSCoder) {

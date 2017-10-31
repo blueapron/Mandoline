@@ -56,16 +56,14 @@ public class PickerView: UIView {
         }
     }
 
-    private var selectedItemOverlayWidthConstraint: NSLayoutConstraint?
-    private var selectedItemOverlayHeightConstraint: NSLayoutConstraint?
+    private var selectedItemOverlaySizeConstraints: SizeConstraints?
     private var collectionViewHeightConstraint: NSLayoutConstraint?
     
     /// Set the size of the cell
     public var cellSize: CGSize? {
         didSet {
             guard let size = cellSize else { return }
-            selectedItemOverlayWidthConstraint?.constant = size.width
-            selectedItemOverlayHeightConstraint?.constant = size.height
+            selectedItemOverlaySizeConstraints?.updateSize(to: size)
             collectionViewHeightConstraint?.constant = size.height
             setNeedsLayout()
         }
@@ -132,11 +130,8 @@ public class PickerView: UIView {
 
         addSubview(selectedItemOverlay)
         selectedItemOverlay.equal(.top, to: collectionView)
-        let sizeConstraints = selectedItemOverlay.equalSize(to: cellSize ?? PickerViewCell.cellSize)
+        selectedItemOverlaySizeConstraints = selectedItemOverlay.equalSize(to: cellSize ?? PickerViewCell.cellSize)
         selectedItemOverlay.equal(.centerX, to: self)
-        
-        selectedItemOverlayWidthConstraint = sizeConstraints.width
-        selectedItemOverlayHeightConstraint = sizeConstraints.height
     }
 
     func reloadData() {
