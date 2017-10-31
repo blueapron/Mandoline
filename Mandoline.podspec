@@ -20,5 +20,4 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'Mandoline' => ['Mandoline/Assets/**/*']
   }
-  s.dependency 'SnapKit', '~> 3.2.0'
 end

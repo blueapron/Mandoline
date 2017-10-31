@@ -23,10 +23,5 @@
     "Mandoline": [
       "Mandoline/Assets/**/*"
     ]
-  },
-  "dependencies": {
-    "SnapKit": [
-      "~> 3.2.0"
-    ]
   }
 }
