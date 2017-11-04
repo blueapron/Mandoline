@@ -7,7 +7,6 @@
 //
 
 import Mandoline
-import SnapKit
 
 class ViewController: UIViewController, PickerViewDataSource {
     var selectableCells: [Selectable] = ScrollableCellViewModel.dummyCells()

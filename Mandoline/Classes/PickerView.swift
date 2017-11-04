@@ -6,8 +6,6 @@
 //  Copyright (c) 2017 ag. All rights reserved.
 //
 
-import SnapKit
-
 public class PickerView: UIView {
 
     /// The dataSource that, upon providing a set of `Selectable` items, reloads the UICollectionView
@@ -58,16 +56,15 @@ public class PickerView: UIView {
         }
     }
 
+    private var selectedItemOverlaySizeConstraints: SizeConstraints?
+    private var collectionViewHeightConstraint: NSLayoutConstraint?
+    
     /// Set the size of the cell
     public var cellSize: CGSize? {
         didSet {
             guard let size = cellSize else { return }
-            selectedItemOverlay.snp.updateConstraints { make in
-                make.size.equalTo(size)
-            }
-            collectionView.snp.updateConstraints { make in
-                make.height.equalTo(size.height)
-            }
+            selectedItemOverlaySizeConstraints?.updateSize(to: size)
+            collectionViewHeightConstraint?.constant = size.height
             setNeedsLayout()
         }
     }
@@ -112,7 +109,7 @@ public class PickerView: UIView {
         collectionView.clipsToBounds = false
         return collectionView
     }()
-
+    
     let selectedItemOverlay: PickerViewOverlay = {
         let view = PickerViewOverlay()
         view.isUserInteractionEnabled = false
@@ -126,17 +123,15 @@ public class PickerView: UIView {
 
         addSubview(collectionView)
         collectionView.register(PickerViewCell.self, forCellWithReuseIdentifier: "DayCell")
-        collectionView.snp.makeConstraints { make in
-            make.left.right.top.equalToSuperview()
-            make.height.equalTo(cellSize ?? PickerViewCell.cellSize.height)
-        }
+        collectionView.equal(.left, to: self)
+        collectionView.equal(.right, to: self)
+        collectionView.equal(.top, to: self)
+        collectionViewHeightConstraint = collectionView.equal(.height, to: cellSize?.height ?? PickerViewCell.cellSize.height)
 
         addSubview(selectedItemOverlay)
-        selectedItemOverlay.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.top)
-            make.size.equalTo(cellSize ?? PickerViewCell.cellSize)
-            make.centerX.equalToSuperview()
-        }
+        selectedItemOverlay.equal(.top, to: collectionView)
+        selectedItemOverlaySizeConstraints = selectedItemOverlay.equalSize(to: cellSize ?? PickerViewCell.cellSize)
+        selectedItemOverlay.equal(.centerX, to: self)
     }
 
     func reloadData() {

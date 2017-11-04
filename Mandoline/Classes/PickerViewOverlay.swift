@@ -20,13 +20,13 @@ class PickerViewOverlay: UIView {
 
     let triangleView = PickerViewOverlayTriangleView()
 
+    private var triangleViewSizeConstraints: SizeConstraints?
+    
     // Computed Properties
     var triangleSize = CGSize(width: 10, height: 5) {
         didSet {
             let rect = CGRect(origin: .zero, size: triangleSize)
-            triangleView.snp.updateConstraints { make in
-                make.size.equalTo(triangleSize)
-            }
+            triangleViewSizeConstraints?.updateSize(to: triangleSize)
             triangleView.frameToFill = rect
         }
     }
@@ -50,19 +50,17 @@ class PickerViewOverlay: UIView {
         }
     }
 
+    private var imageViewSizeConstraints: SizeConstraints?
     var dotSize = CGSize(width: 8, height: 8) {
         didSet {
-            imageView.snp.updateConstraints { make in
-                make.size.equalTo(dotSize)
-            }
+            imageViewSizeConstraints?.updateSize(to: dotSize)
         }
     }
 
+    private var imageViewTopConstraint: NSLayoutConstraint?
     var dotDistanceFromTop: CGFloat = 70 {
         didSet {
-            imageView.snp.updateConstraints { make in
-                make.top.equalToSuperview().offset(dotDistanceFromTop)
-            }
+            imageViewTopConstraint?.constant = dotDistanceFromTop
         }
     }
 
@@ -74,31 +72,21 @@ class PickerViewOverlay: UIView {
 
     func setupSubviews() {
         addSubview(view)
-        view.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.left.right.equalToSuperview()
-        }
+        view.equalEdges(to: self)
         view.layer.borderWidth = borderWidth
         view.layer.borderColor = borderColor.cgColor
 
         addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(dotDistanceFromTop)
-            make.centerX.equalToSuperview()
-        }
+        imageViewTopConstraint = imageView.equal(.top, to: self, offset: dotDistanceFromTop)
+        imageView.equal(.centerX, to: self)
 
         imageView.tintColor = dotColor
-        imageView.snp.makeConstraints { make in
-            make.size.equalTo(dotSize)
-        }
+        imageViewSizeConstraints = imageView.equalSize(to: dotSize)
 
         addSubview(triangleView)
-        triangleView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.size.equalTo(triangleSize)
-        }
+        triangleView.equal(.top, to: self)
+        triangleView.equal(.centerX, to: self)
+        triangleViewSizeConstraints = triangleView.equalSize(to: triangleSize)
     }
 
     required init?(coder aDecoder: NSCoder) {
