@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/cocoapods/v/Mandoline.svg?style=flat)](http://cocoapods.org/pods/Mandoline)
 [![License](https://img.shields.io/cocoapods/l/Mandoline.svg?style=flat)](http://cocoapods.org/pods/Mandoline)
 [![Platform](https://img.shields.io/cocoapods/p/Mandoline.svg?style=flat)](http://cocoapods.org/pods/Mandoline)
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=59ea1c9789d8e30001a447e9&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/59ea1c9789d8e30001a447e9/build/latest?branch=master)
 
 The `PickerView` is a `UICollectionView` that provides a smooth "picking" interface. In order to get the most out of it, a consuming view controller should support the `Selectable` protocol in the intended `UICollectionViewCell`s that dictates whether a cell `isSelectable`.
 
