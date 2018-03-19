@@ -1,14 +1,14 @@
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
 target 'Mandoline_Example' do
   pod 'Mandoline', :path => '../'
-  pod 'SnapKit', '~> 3.2.0'
+  pod 'SnapKit', '~> 4.0.0'
 
   target 'Mandoline_Tests' do
     inherit! :search_paths
 
-    pod 'Quick', '~> 1.0.0'
+    pod 'Quick', '~> 1.2.0'
     pod 'Nimble', '~> 7.0.1'
   end
 end

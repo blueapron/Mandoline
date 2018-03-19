@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Mandoline'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'A scrolling picker view.'
 
   s.description      = <<-DESC
@@ -14,11 +14,11 @@ Pod::Spec.new do |s|
   s.author           = { 'ag' => 'anat.gilboa@blueapron.com' }
   s.source           = { :git => 'https://github.com/blueapron/Mandoline.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'Mandoline/Classes/**/*'
   s.resource_bundles = {
     'Mandoline' => ['Mandoline/Assets/**/*']
   }
-  s.dependency 'SnapKit', '~> 3.2.0'
+  s.dependency 'SnapKit', '~> 4.0.0'
 end
