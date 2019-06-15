@@ -11,7 +11,7 @@ The `PickerView` is a `UICollectionView` that provides a smooth "picking" interf
 
 If you want to have a _boss_ scrolling experience like this:
 
-<img align="left" src="https://github.com/ivanvorobei/Mandoline/blob/master/Mandoline/Assets/rescheduler.gif" width="280"/>
+<img src="https://github.com/ivanvorobei/Mandoline/blob/master/Mandoline/Assets/rescheduler.gif" width="280"/>
 
 It also has responsive haptic feedback that is generated upon selection and moving across cells.
 
